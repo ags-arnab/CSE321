@@ -94,21 +94,39 @@ void checkCapabilityAccess(CapabilityUser *user, const char *resourceName, int p
     printf("Capability Check: User %s has NO capability for %s: Access DENIED\n", user->user.name, resourceName);
 }
 
+//Enhancement Functions
+int addACLEntry(ACLControlledResource *aclResource, const char *username, int permissions) {
+    if (aclResource->entryCount >= MAX_USERS) {
+        return 0; // No space available
+    }
+    strcpy(aclResource->entries[aclResource->entryCount].username, username);
+    aclResource->entries[aclResource->entryCount].permissions = permissions;
+    aclResource->entryCount++;
+    return 1; // Success
+}
+
+int addCapability(CapabilityUser *user, const char *resourceName, int permissions) {
+    if (user->capabilityCount >= MAX_RESOURCES) {
+        return 0; // No space available
+    }
+    strcpy(user->capabilities[user->capabilityCount].resourceName, resourceName);
+    user->capabilities[user->capabilityCount].permissions = permissions;
+    user->capabilityCount++;
+    return 1; // Success
+}
 
 int main(){
     //Sample users and resources
-    User users[MAX_USERS] = {{"Alice"}, {"Bob"}, {"Charlie"}, {"David"}, {"Eve"}};
-    Resource resources[MAX_RESOURCES] = {{"File1"}, {"File2"}, {"File3"}, {"Database"}, {"Config"}};
+    User users[MAX_USERS] = {{"Alice"}, {"Bob"}, {"Charlie"}, {"Arnab"}, {"ZTP"}};
+    Resource resources[MAX_RESOURCES] = {{"File1"}, {"File2"}, {"File3"}, {"Secret"}, {"Secret2"}};
 
     //ACL Setup
     ACLControlledResource aclResources[MAX_RESOURCES];
     
     aclResources[0].resource = resources[0];
-    strcpy(aclResources[0].entries[0].username, "Alice");
-    aclResources[0].entries[0].permissions = READ | WRITE;
-    strcpy(aclResources[0].entries[1].username, "Bob");
-    aclResources[0].entries[1].permissions = READ;
-    aclResources[0].entryCount = 2;
+    aclResources[0].entryCount = 0;  // Initialize count
+    addACLEntry(&aclResources[0], "Alice", READ | WRITE);
+    addACLEntry(&aclResources[0], "Bob", READ);
     
     aclResources[1].resource = resources[1];
     strcpy(aclResources[1].entries[0].username, "Alice");
@@ -120,19 +138,19 @@ int main(){
     aclResources[2].resource = resources[2];
     strcpy(aclResources[2].entries[0].username, "Bob");
     aclResources[2].entries[0].permissions = READ | WRITE | EXECUTE;
-    strcpy(aclResources[2].entries[1].username, "David");
+    strcpy(aclResources[2].entries[1].username, "Arnab");
     aclResources[2].entries[1].permissions = READ;
     aclResources[2].entryCount = 2;
     
     aclResources[3].resource = resources[3];
-    strcpy(aclResources[3].entries[0].username, "David");
+    strcpy(aclResources[3].entries[0].username, "Arnab");
     aclResources[3].entries[0].permissions = READ | WRITE;
-    strcpy(aclResources[3].entries[1].username, "Eve");
+    strcpy(aclResources[3].entries[1].username, "ZTP");
     aclResources[3].entries[1].permissions = READ;
     aclResources[3].entryCount = 2;
     
     aclResources[4].resource = resources[4];
-    strcpy(aclResources[4].entries[0].username, "Eve");
+    strcpy(aclResources[4].entries[0].username, "ZTP");
     aclResources[4].entries[0].permissions = READ | WRITE | EXECUTE;
     strcpy(aclResources[4].entries[1].username, "Alice");
     aclResources[4].entries[1].permissions = EXECUTE;
@@ -142,13 +160,10 @@ int main(){
     CapabilityUser capabilityUsers[MAX_USERS];
     
     capabilityUsers[0].user = users[0];
-    strcpy(capabilityUsers[0].capabilities[0].resourceName, "File1");
-    capabilityUsers[0].capabilities[0].permissions = READ | WRITE;
-    strcpy(capabilityUsers[0].capabilities[1].resourceName, "File2");
-    capabilityUsers[0].capabilities[1].permissions = READ | EXECUTE;
-    strcpy(capabilityUsers[0].capabilities[2].resourceName, "Config");
-    capabilityUsers[0].capabilities[2].permissions = EXECUTE;
-    capabilityUsers[0].capabilityCount = 3;
+    capabilityUsers[0].capabilityCount = 0;  // Initialize count
+    addCapability(&capabilityUsers[0], "File1", READ | WRITE);
+    addCapability(&capabilityUsers[0], "File2", READ | EXECUTE);
+    addCapability(&capabilityUsers[0], "Secret2", EXECUTE);
     
     capabilityUsers[1].user = users[1];
     strcpy(capabilityUsers[1].capabilities[0].resourceName, "File1");
@@ -165,14 +180,14 @@ int main(){
     capabilityUsers[3].user = users[3];
     strcpy(capabilityUsers[3].capabilities[0].resourceName, "File3");
     capabilityUsers[3].capabilities[0].permissions = READ;
-    strcpy(capabilityUsers[3].capabilities[1].resourceName, "Database");
+    strcpy(capabilityUsers[3].capabilities[1].resourceName, "Secret");
     capabilityUsers[3].capabilities[1].permissions = READ | WRITE;
     capabilityUsers[3].capabilityCount = 2;
     
     capabilityUsers[4].user = users[4];
-    strcpy(capabilityUsers[4].capabilities[0].resourceName, "Database");
+    strcpy(capabilityUsers[4].capabilities[0].resourceName, "Secret");
     capabilityUsers[4].capabilities[0].permissions = READ;
-    strcpy(capabilityUsers[4].capabilities[1].resourceName, "Config");
+    strcpy(capabilityUsers[4].capabilities[1].resourceName, "Secret2");
     capabilityUsers[4].capabilities[1].permissions = READ | WRITE | EXECUTE;
     capabilityUsers[4].capabilityCount = 2;
 
@@ -182,9 +197,9 @@ int main(){
     checkACLAccess(&aclResources[0], "Charlie", READ);
     checkACLAccess(&aclResources[1], "Alice", EXECUTE);
     checkACLAccess(&aclResources[2], "Bob", READ | WRITE);
-    checkACLAccess(&aclResources[3], "David", WRITE);
-    checkACLAccess(&aclResources[3], "Eve", WRITE);
-    checkACLAccess(&aclResources[4], "Eve", READ | EXECUTE);
+    checkACLAccess(&aclResources[3], "Arnab", WRITE);
+    checkACLAccess(&aclResources[3], "ZTP", WRITE);
+    checkACLAccess(&aclResources[4], "ZTP", READ | EXECUTE);
     checkACLAccess(&aclResources[4], "Alice", READ);
 
     //Test Capability
@@ -192,10 +207,10 @@ int main(){
     checkCapabilityAccess(&capabilityUsers[1], "File1", WRITE);
     checkCapabilityAccess(&capabilityUsers[2], "File2", READ);
     checkCapabilityAccess(&capabilityUsers[0], "File2", EXECUTE);
-    checkCapabilityAccess(&capabilityUsers[3], "Database", READ);
-    checkCapabilityAccess(&capabilityUsers[4], "Config", WRITE);
-    checkCapabilityAccess(&capabilityUsers[1], "Database", READ);
-    checkCapabilityAccess(&capabilityUsers[2], "Config", READ);
+    checkCapabilityAccess(&capabilityUsers[3], "Secret", READ);
+    checkCapabilityAccess(&capabilityUsers[4], "Secret2", WRITE);
+    checkCapabilityAccess(&capabilityUsers[1], "Secret", READ);
+    checkCapabilityAccess(&capabilityUsers[2], "Secret2", READ);
     checkCapabilityAccess(&capabilityUsers[4], "File1", READ);
 
     return 0;
