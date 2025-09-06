@@ -1,0 +1,12 @@
+a[0] = 0
+a[1] = 1
+a[2] = 1
+a[3] = 2
+a[4] = 3
+a[5] = 5
+a[6] = 8
+a[7] = 13
+a[8] = 21
+result of search #1 = 0
+result of search #2 = 3
+result of search #3 = -1

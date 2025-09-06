@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gcc:*)",
+      "Bash(./task5)",
+      "Bash(timeout:*)",
+      "Bash(rm:*)",
+      "Bash(./task2)",
+      "Bash(./task3)",
+      "Bash(./task4)",
+      "Bash(for i in {1..10})",
+      "Bash(do echo \"=== Run $i ===\")",
+      "Bash(done)"
+    ],
+    "deny": []
+  }
+}

@@ -1,0 +1,62 @@
+Student 0 started waiting for consultation
+A waiting student started getting consultation
+Number of students now waiting: 0
+ST giving consultation
+Student 0 is getting consultation
+Student 1 started waiting for consultation
+Student 0 finished getting consultation and left
+Number of served students: 1
+A waiting student started getting consultation
+Number of students now waiting: 0
+ST giving consultation
+Student 1 is getting consultation
+Student 2 started waiting for consultation
+Student 1 finished getting consultation and left
+Number of served students: 2
+A waiting student started getting consultation
+Number of students now waiting: 0
+ST giving consultation
+Student 2 is getting consultation
+Student 3 started waiting for consultation
+Student 4 started waiting for consultation
+Student 2 finished getting consultation and left
+Number of served students: 3
+A waiting student started getting consultation
+Number of students now waiting: 1
+ST giving consultation
+Student 3 is getting consultation
+Student 5 started waiting for consultation
+Student 6 started waiting for consultation
+No chairs remaining in lobby. Student 7 Leaving.....
+Student 7 finished getting consultation and left
+Number of served students: 4
+Student 3 finished getting consultation and left
+Number of served students: 5
+A waiting student started getting consultation
+Number of students now waiting: 2
+ST giving consultation
+Student 4 is getting consultation
+Student 8 started waiting for consultation
+No chairs remaining in lobby. Student 9 Leaving.....
+Student 9 finished getting consultation and left
+Number of served students: 6
+Student 4 finished getting consultation and left
+Number of served students: 7
+A waiting student started getting consultation
+Number of students now waiting: 2
+ST giving consultation
+Student 5 is getting consultation
+Student 5 finished getting consultation and left
+Number of served students: 8
+A waiting student started getting consultation
+Number of students now waiting: 1
+ST giving consultation
+Student 6 is getting consultation
+Student 6 finished getting consultation and left
+Number of served students: 9
+A waiting student started getting consultation
+Number of students now waiting: 0
+ST giving consultation
+Student 8 is getting consultation
+Student 8 finished getting consultation and left
+Number of served students: 10
